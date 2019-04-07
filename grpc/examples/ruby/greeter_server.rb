@@ -25,15 +25,18 @@ $LOAD_PATH.unshift(lib_dir) unless $LOAD_PATH.include?(lib_dir)
 require 'grpc'
 require 'helloworld_services_pb'
 
-# GreeterServer is simple server that implements the Helloworld Greeter server.
+# main starts an RpcServer that receives requests to GreeterServer at the sample
 class GreeterServer < Helloworld::Greeter::Service
-  # say_hello implements the SayHello rpc method.
+
   def say_hello(hello_req, _unused_call)
     Helloworld::HelloReply.new(message: "Hello #{hello_req.name}")
   end
+
+  def say_hello_again(hello_req, _unused_call)
+    Helloworld::HelloReply.new(message: "Hello again, #{hello_req.name}")
+  end
 end
 
-# main starts an RpcServer that receives requests to GreeterServer at the sample
 # server port.
 def main
   s = GRPC::RpcServer.new
